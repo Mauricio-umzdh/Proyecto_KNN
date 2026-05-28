@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Sistema KNN</title>
+
+    <link rel="stylesheet"
+    href="{{ url_for('static', filename='style.css') }}">
+
+</head>
+
+<body>
+
+    <div class="container">
+
+        <h1>Predicción con KNN</h1>
+
+        <form action="/predecir" method="POST">
+
+            <label>Edad</label>
+            <input type="number" name="Age" required>
+
+            <label>Género</label>
+            <input type="number" name="Gender" min="0" max="1" required>
+
+            <label>Nivel Académico</label>
+            <input type="number" name="Academic_Level" min="1" max="5" required>
+
+            <label>Horas de Uso Diario</label>
+            <input type="number" step="0.1" name="Avg_Daily_Usage_Hours" required>
+
+            <label>Plataforma Más Usada</label>
+            <input type="number" name="Most_Used_Platform" required>
+
+            <label>Horas de Sueño</label>
+            <input type="number" step="0.1" name="Sleep_Hours_Per_Night" required>
+
+            <label>Puntaje de Salud Mental</label>
+            <input type="number" step="0.1" name="Mental_Health_Score" required>
+
+            <label>Afecta el Rendimiento Académico</label>
+            <input type="number" name="Affects_Academic_Performance" min="0" max="1" required>
+
+            <button type="submit">
+                Predecir
+            </button>
+
+        </form>
+
+        {% if prediccion %}
+
+        <div class="resultado">
+
+            Resultado de la predicción: {{ prediccion }}
+
+        </div>
+
+        {% endif %}
+
+    </div>
+
+</body>
+
+</html>
