@@ -1,68 +1,236 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
 
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Predicción KNN</title>
 
-    <title>Sistema KNN</title>
+    <style>
 
-    <link rel="stylesheet"
-    href="{{ url_for('static', filename='style.css') }}">
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        body{
+
+            background: linear-gradient(135deg,#0f172a,#020617);
+            min-height:100vh;
+            display:flex;
+            justify-content:center;
+            align-items:center;
+            color:white;
+
+        }
+
+        .container{
+
+            width:900px;
+            background: rgba(255,255,255,0.05);
+            border:1px solid rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            padding:40px;
+            border-radius:25px;
+            box-shadow:0px 0px 40px rgba(0,255,255,0.2);
+
+        }
+
+        h1{
+
+            text-align:center;
+            margin-bottom:30px;
+            font-size:40px;
+            color:#00ffff;
+
+        }
+
+        .grid{
+
+            display:grid;
+            grid-template-columns:1fr 1fr;
+            gap:20px;
+
+        }
+
+        .campo{
+
+            display:flex;
+            flex-direction:column;
+
+        }
+
+        label{
+
+            margin-bottom:8px;
+            color:#cbd5e1;
+
+        }
+
+        input, select{
+
+            padding:14px;
+            border:none;
+            border-radius:12px;
+            background:#111827;
+            color:white;
+            font-size:16px;
+            outline:none;
+
+        }
+
+        input:focus,
+        select:focus{
+
+            border:2px solid cyan;
+
+        }
+
+        .btn{
+
+            width:100%;
+            margin-top:30px;
+            padding:18px;
+            border:none;
+            border-radius:15px;
+            background: linear-gradient(90deg,#06b6d4,#3b82f6);
+            color:white;
+            font-size:18px;
+            cursor:pointer;
+            transition:0.3s;
+
+        }
+
+        .btn:hover{
+
+            transform:scale(1.03);
+            box-shadow:0px 0px 20px cyan;
+
+        }
+
+        .resultado{
+
+            margin-top:30px;
+            text-align:center;
+            padding:20px;
+            border-radius:15px;
+            font-size:25px;
+            font-weight:bold;
+
+        }
+
+        .positivo{
+
+            background:#14532d;
+            color:#4ade80;
+
+        }
+
+        .neutral{
+
+            background:#78350f;
+            color:#facc15;
+
+        }
+
+        .negativo{
+
+            background:#7f1d1d;
+            color:#f87171;
+
+        }
+
+    </style>
 
 </head>
 
 <body>
 
-    <div class="container">
+<div class="container">
 
-        <h1>Predicción con KNN</h1>
+    <h1>Predicción de Impacto</h1>
 
-        <form action="/predecir" method="POST">
+    <form action="/predecir" method="POST">
 
-            <label>Edad</label>
-            <input type="number" name="Age" required>
+        <div class="grid">
 
-            <label>Género</label>
-            <input type="number" name="Gender" min="0" max="1" required>
+            <div class="campo">
+                <label>Edad (1-5)</label>
+                <input type="number" name="Age" min="1" max="5" required>
+            </div>
 
-            <label>Nivel Académico</label>
-            <input type="number" name="Academic_Level" min="1" max="5" required>
+            <div class="campo">
+                <label>Género</label>
+                <select name="Gender">
+                    <option value="1">Masculino</option>
+                    <option value="0">Femenino</option>
+                </select>
+            </div>
 
-            <label>Horas de Uso Diario</label>
-            <input type="number" step="0.1" name="Avg_Daily_Usage_Hours" required>
+            <div class="campo">
+                <label>Nivel Académico (1-5)</label>
+                <input type="number" name="Academic_Level" min="1" max="5" required>
+            </div>
 
-            <label>Plataforma Más Usada</label>
-            <input type="number" name="Most_Used_Platform" required>
+            <div class="campo">
+                <label>Horas de Uso Diario (1-5)</label>
+                <input type="number" name="Avg_Daily_Usage_Hours" min="1" max="5" required>
+            </div>
 
-            <label>Horas de Sueño</label>
-            <input type="number" step="0.1" name="Sleep_Hours_Per_Night" required>
+            <div class="campo">
+                <label>Plataforma Más Usada (1-5)</label>
+                <input type="number" name="Most_Used_Platform" min="1" max="5" required>
+            </div>
 
-            <label>Puntaje de Salud Mental</label>
-            <input type="number" step="0.1" name="Mental_Health_Score" required>
+            <div class="campo">
+                <label>Horas de Sueño (1-5)</label>
+                <input type="number" name="Sleep_Hours_Per_Night" min="1" max="5" required>
+            </div>
 
-            <label>Afecta el Rendimiento Académico</label>
-            <input type="number" name="Affects_Academic_Performance" min="0" max="1" required>
+            <div class="campo">
+                <label>Salud Mental (1-5)</label>
+                <input type="number" name="Mental_Health_Score" min="1" max="5" required>
+            </div>
 
-            <button type="submit">
-                Predecir
-            </button>
-
-        </form>
-
-        {% if prediccion %}
-
-        <div class="resultado">
-
-            Resultado de la predicción: {{ prediccion }}
+            <div class="campo">
+                <label>Afecta Rendimiento</label>
+                <select name="Affects_Academic_Performance">
+                    <option value="1">Sí</option>
+                    <option value="0">No</option>
+                </select>
+            </div>
 
         </div>
 
+        <button class="btn" type="submit">
+            PREDECIR IMPACTO
+        </button>
+
+    </form>
+
+    {% if resultado %}
+
+        {% if resultado == "POSITIVO" %}
+            <div class="resultado positivo">
+                RESULTADO: POSITIVO
+            </div>
+
+        {% elif resultado == "NEUTRAL" %}
+            <div class="resultado neutral">
+                RESULTADO: NEUTRAL
+            </div>
+
+        {% else %}
+            <div class="resultado negativo">
+                RESULTADO: NEGATIVO
+            </div>
+
         {% endif %}
 
-    </div>
+    {% endif %}
+
+</div>
 
 </body>
-
 </html>

@@ -52,9 +52,6 @@ def init_db():
     ''')
 
     conn.commit()
-
-    print("Base de datos creada correctamente")
-
     conn.close()
 
 # =========================
@@ -63,7 +60,6 @@ def init_db():
 
 @app.route('/')
 def index():
-
     return render_template('index.html')
 
 # =========================
@@ -73,28 +69,36 @@ def index():
 @app.route('/predecir', methods=['POST'])
 def predecir():
 
-    # Obtener datos del formulario
     datos = {
 
-        'Age': float(request.form['Age']),
+        'Age': int(request.form['Age']),
         'Gender': int(request.form['Gender']),
         'Academic_Level': int(request.form['Academic_Level']),
-        'Avg_Daily_Usage_Hours': float(request.form['Avg_Daily_Usage_Hours']),
+        'Avg_Daily_Usage_Hours': int(request.form['Avg_Daily_Usage_Hours']),
         'Most_Used_Platform': int(request.form['Most_Used_Platform']),
-        'Sleep_Hours_Per_Night': float(request.form['Sleep_Hours_Per_Night']),
-        'Mental_Health_Score': float(request.form['Mental_Health_Score']),
+        'Sleep_Hours_Per_Night': int(request.form['Sleep_Hours_Per_Night']),
+        'Mental_Health_Score': int(request.form['Mental_Health_Score']),
         'Affects_Academic_Performance': int(request.form['Affects_Academic_Performance'])
 
     }
 
-    # Convertir datos a DataFrame
     df = pd.DataFrame([datos])
 
-    # Escalar columnas numéricas
+    # Escalar
     df[numeric_cols] = scaler.transform(df[numeric_cols])
 
-    # Realizar predicción
+    # Predicción
     prediccion = modelo.predict(df)[0]
+
+    # Convertir resultado a texto
+    if prediccion == 0:
+        resultado = "NEGATIVO"
+
+    elif prediccion == 1:
+        resultado = "NEUTRAL"
+
+    else:
+        resultado = "POSITIVO"
 
     # =========================
     # GUARDAR EN SQLITE
@@ -134,13 +138,11 @@ def predecir():
     ))
 
     conn.commit()
-
     conn.close()
 
-    # Mostrar resultado
     return render_template(
         'index.html',
-        prediccion=prediccion
+        resultado=resultado
     )
 
 # =========================
@@ -151,4 +153,4 @@ if __name__ == '__main__':
 
     init_db()
 
-    app.run(host='0.0.0.0', port=5000)
+    app.run(host='0.0.0.0', port=5000, debug=True)
