@@ -2,6 +2,7 @@ from flask import Flask, render_template, request
 import pandas as pd
 import sqlite3
 import joblib
+import os
 
 app = Flask(__name__)
 
@@ -29,30 +30,34 @@ numeric_cols = [
 
 def init_db():
 
-    conn = sqlite3.connect('database.db')
+    if not os.path.exists('database.db'):
 
-    cursor = conn.cursor()
+        conn = sqlite3.connect('database.db')
 
-    cursor.execute('''
-    CREATE TABLE IF NOT EXISTS respuestas (
+        cursor = conn.cursor()
 
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        cursor.execute('''
+        CREATE TABLE respuestas (
 
-        Age REAL,
-        Gender INTEGER,
-        Academic_Level INTEGER,
-        Avg_Daily_Usage_Hours REAL,
-        Most_Used_Platform INTEGER,
-        Sleep_Hours_Per_Night REAL,
-        Mental_Health_Score REAL,
-        Affects_Academic_Performance INTEGER,
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
 
-        prediccion INTEGER
-    )
-    ''')
+            Age REAL,
+            Gender INTEGER,
+            Academic_Level INTEGER,
+            Avg_Daily_Usage_Hours REAL,
+            Most_Used_Platform INTEGER,
+            Sleep_Hours_Per_Night REAL,
+            Mental_Health_Score REAL,
+            Affects_Academic_Performance INTEGER,
 
-    conn.commit()
-    conn.close()
+            prediccion INTEGER
+        )
+        ''')
+
+        conn.commit()
+        conn.close()
+
+        print("Base de datos creada")
 
 # =========================
 # RUTA PRINCIPAL
@@ -82,23 +87,36 @@ def predecir():
 
     }
 
+    # DataFrame
     df = pd.DataFrame([datos])
 
-    # Escalar
+    # ORDEN EXACTO DE COLUMNAS DEL ENTRENAMIENTO
+    df = df[[
+        'Age',
+        'Gender',
+        'Academic_Level',
+        'Avg_Daily_Usage_Hours',
+        'Most_Used_Platform',
+        'Affects_Academic_Performance',
+        'Sleep_Hours_Per_Night',
+        'Mental_Health_Score'
+    ]]
+
+    # Escalar columnas numéricas
     df[numeric_cols] = scaler.transform(df[numeric_cols])
 
     # Predicción
-    prediccion = modelo.predict(df)[0]
+    prediccion_num = int(modelo.predict(df)[0])
 
-    # Convertir resultado a texto
-    if prediccion == 0:
-        resultado = "NEGATIVO"
+    # Texto resultado
+    if prediccion_num == 0:
+        prediccion_texto = "Negativo"
 
-    elif prediccion == 1:
-        resultado = "NEUTRAL"
+    elif prediccion_num == 1:
+        prediccion_texto = "Neutral"
 
     else:
-        resultado = "POSITIVO"
+        prediccion_texto = "Positivo"
 
     # =========================
     # GUARDAR EN SQLITE
@@ -133,7 +151,7 @@ def predecir():
         datos['Sleep_Hours_Per_Night'],
         datos['Mental_Health_Score'],
         datos['Affects_Academic_Performance'],
-        int(prediccion)
+        prediccion_num
 
     ))
 
@@ -142,7 +160,7 @@ def predecir():
 
     return render_template(
         'index.html',
-        resultado=resultado
+        prediccion=prediccion_texto
     )
 
 # =========================
@@ -153,4 +171,4 @@ if __name__ == '__main__':
 
     init_db()
 
-    app.run(host='0.0.0.0', port=5000, debug=True)
+    app.run(debug=True)
