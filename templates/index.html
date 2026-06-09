@@ -8,207 +8,368 @@
 
     <title>Predicción de Impacto en Redes Sociales</title>
 
-    <link rel="stylesheet"
-          href="{{ url_for('static', filename='style.css') }}">
+    <style>
+
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+            font-family:'Segoe UI',sans-serif;
+        }
+
+        body{
+
+            min-height:100vh;
+
+            display:flex;
+            justify-content:center;
+            align-items:center;
+
+            background:linear-gradient(
+                135deg,
+                #0f172a,
+                #111827,
+                #1e293b
+            );
+
+            color:white;
+
+            padding:20px;
+        }
+
+        .container{
+
+            width:100%;
+            max-width:750px;
+
+            background:rgba(255,255,255,0.05);
+
+            backdrop-filter:blur(15px);
+
+            border:1px solid rgba(255,255,255,0.1);
+
+            border-radius:25px;
+
+            padding:40px;
+
+            box-shadow:
+                0 0 30px rgba(0,255,255,0.2);
+
+        }
+
+        h1{
+
+            text-align:center;
+
+            margin-bottom:30px;
+
+            color:#00ffff;
+        }
+
+        .grupo{
+
+            margin-bottom:18px;
+        }
+
+        label{
+
+            display:block;
+
+            margin-bottom:8px;
+
+            font-weight:bold;
+        }
+
+        input,
+        select{
+
+            width:100%;
+
+            padding:12px;
+
+            border-radius:12px;
+
+            border:1px solid rgba(255,255,255,0.15);
+
+            background:#1e293b;
+
+            color:white;
+
+            font-size:15px;
+        }
+
+        input:focus,
+        select:focus{
+
+            outline:none;
+
+            box-shadow:0 0 12px cyan;
+        }
+
+        button{
+
+            width:100%;
+
+            padding:15px;
+
+            border:none;
+
+            border-radius:15px;
+
+            background:cyan;
+
+            color:black;
+
+            font-size:18px;
+
+            font-weight:bold;
+
+            cursor:pointer;
+
+            transition:0.3s;
+        }
+
+        button:hover{
+
+            transform:scale(1.02);
+
+            box-shadow:0 0 20px cyan;
+        }
+
+        .resultado{
+
+            margin-top:25px;
+
+            text-align:center;
+
+            padding:20px;
+
+            border-radius:15px;
+
+            font-size:20px;
+
+            font-weight:bold;
+        }
+
+        .negativo{
+
+            background:#3b0d0d;
+            border:2px solid red;
+            color:#ff7a7a;
+        }
+
+        .neutral{
+
+            background:#3d3608;
+            border:2px solid gold;
+            color:#ffe066;
+        }
+
+        .positivo{
+
+            background:#083d1c;
+            border:2px solid lime;
+            color:#8cff8c;
+        }
+
+    </style>
 
 </head>
 
 <body>
 
-    <div class="container">
+<div class="container">
 
-        <h1>Predicción de Impacto en Redes Sociales</h1>
+    <h1>Predicción de Impacto en Redes Sociales</h1>
 
-        <form action="/predecir" method="POST">
+    <form action="/predecir" method="POST">
 
-            <!-- EDAD -->
-            <div class="grupo">
+        <div class="grupo">
+            <label>Edad</label>
+            <input
+                type="number"
+                name="Age"
+                min="1"
+                max="122"
+                step="1"
+                required
+            >
+        </div>
 
-                <label>Edad</label>
+        <div class="grupo">
+            <label>Género</label>
 
-                <input
-                    type="number"
-                    name="Age"
-                    min="1"
-                    max="122"
-                    required>
+            <select name="Gender" required>
 
-            </div>
+                <option value="0">Femenino</option>
+                <option value="1">Masculino</option>
 
-            <!-- GENERO -->
-            <div class="grupo">
+            </select>
 
-                <label>Género</label>
+        </div>
 
-                <select name="Gender" required>
+        <div class="grupo">
+            <label>Nivel Académico</label>
 
-                    <option value="">Seleccione...</option>
+            <select name="Academic_Level" required>
 
-                    <option value="0">Femenino</option>
-                    <option value="1">Masculino</option>
+                <option value="1">Secundario</option>
+                <option value="2">Licenciatura</option>
+                <option value="3">Graduado</option>
 
-                </select>
+            </select>
 
-            </div>
+        </div>
 
-            <!-- NIVEL ACADEMICO -->
-            <div class="grupo">
+        <div class="grupo">
+            <label>Plataforma Más Utilizada</label>
 
-                <label>Nivel Académico</label>
+            <select name="Most_Used_Platform" required>
 
-                <select name="Academic_Level" required>
+                <option value="1">Facebook</option>
+                <option value="2">Instagram</option>
+                <option value="3">LinkedIn</option>
+                <option value="4">Snapchat</option>
+                <option value="5">TikTok</option>
+                <option value="6">Twitter/X</option>
+                <option value="7">YouTube</option>
+                <option value="8">WhatsApp</option>
+                <option value="9">WeChat</option>
+                <option value="10">KakaoTalk</option>
+                <option value="11">LINE</option>
+                <option value="12">VKontakte</option>
+                <option value="13">Otros</option>
 
-                    <option value="">Seleccione...</option>
+            </select>
 
-                    <option value="1">Secundario</option>
-                    <option value="2">Licenciatura</option>
-                    <option value="3">Graduado</option>
+        </div>
 
-                </select>
+        <div class="grupo">
+            <label>Horas de Uso Diario</label>
 
-            </div>
+            <input
+                type="number"
+                name="Avg_Daily_Usage_Hours"
+                min="1"
+                max="24"
+                step="1"
+                required
+            >
+        </div>
 
-            <!-- HORAS DE USO -->
-            <div class="grupo">
+        <div class="grupo">
+            <label>¿Afecta el Rendimiento Académico?</label>
 
-                <label>Horas de Uso Diario</label>
+            <select
+                name="Affects_Academic_Performance"
+                required
+            >
 
-                <input
-                    type="number"
-                    name="Avg_Daily_Usage_Hours"
-                    min="1"
-                    max="24"
-                    required>
+                <option value="0">No</option>
+                <option value="1">Sí</option>
 
-            </div>
+            </select>
 
-            <!-- PLATAFORMA -->
-            <div class="grupo">
+        </div>
 
-                <label>Plataforma Más Usada</label>
+        <div class="grupo">
+            <label>Horas de Sueño por Noche</label>
 
-                <select name="Most_Used_Platform" required>
+            <input
+                type="number"
+                name="Sleep_Hours_Per_Night"
+                min="1"
+                max="24"
+                step="1"
+                required
+            >
+        </div>
 
-                    <option value="">Seleccione...</option>
+        <div class="grupo">
+            <label>Puntaje de Salud Mental (1.0 - 10.0)</label>
 
-                    <option value="1">Facebook</option>
-                    <option value="2">Instagram</option>
-                    <option value="3">LinkedIn</option>
-                    <option value="4">Snapchat</option>
-                    <option value="5">TikTok</option>
-                    <option value="6">Twitter / X</option>
-                    <option value="7">YouTube</option>
-                    <option value="8">WhatsApp</option>
-                    <option value="9">WeChat</option>
-                    <option value="10">KakaoTalk</option>
-                    <option value="11">LINE</option>
-                    <option value="12">VKontakte</option>
-                    <option value="13">Otros</option>
+            <input
+                type="number"
+                name="Mental_Health_Score"
+                min="1"
+                max="10"
+                step="0.1"
+                required
+            >
+        </div>
 
-                </select>
+        <button type="submit">
 
-            </div>
+            PREDECIR IMPACTO
 
-            <!-- AFECTA RENDIMIENTO -->
-            <div class="grupo">
+        </button>
 
-                <label>¿Afecta el Rendimiento Académico?</label>
+    </form>
 
-                <select name="Affects_Academic_Performance" required>
-
-                    <option value="">Seleccione...</option>
-
-                    <option value="0">No</option>
-                    <option value="1">Sí</option>
-
-                </select>
-
-            </div>
-
-            <!-- HORAS DE SUEÑO -->
-            <div class="grupo">
-
-                <label>Horas de Sueño por Noche</label>
-
-                <input
-                    type="number"
-                    name="Sleep_Hours_Per_Night"
-                    min="1"
-                    max="24"
-                    required>
-
-            </div>
-
-            <!-- SALUD MENTAL -->
-            <div class="grupo">
-
-                <label>Puntaje de Salud Mental (1 - 10)</label>
-
-                <input
-                    type="number"
-                    name="Mental_Health_Score"
-                    min="1"
-                    max="10"
-                    required>
-
-            </div>
-
-            <button type="submit">
-
-                PREDECIR IMPACTO
-
-            </button>
-
-        </form>
-
-        <!-- RESULTADOS -->
+    {% if prediccion is not none %}
 
         {% if prediccion == 0 %}
 
-        <div class="resultado negativo">
+            <div class="resultado negativo">
 
-            <h2>🔴 IMPACTO NEGATIVO</h2>
+                Resultado: NEGATIVO
 
-            <p>
-                Las redes sociales presentan un efecto
-                predominantemente negativo sobre el usuario.
-            </p>
+            </div>
 
-        </div>
+        {% elif prediccion == 1 %}
 
-        {% endif %}
+            <div class="resultado neutral">
 
-        {% if prediccion == 1 %}
+                Resultado: NEUTRAL
 
-        <div class="resultado neutral">
+            </div>
 
-            <h2>🟡 IMPACTO NEUTRAL</h2>
+        {% elif prediccion == 2 %}
 
-            <p>
-                El impacto observado es moderado y equilibrado.
-            </p>
+            <div class="resultado positivo">
 
-        </div>
+                Resultado: POSITIVO
+
+            </div>
 
         {% endif %}
 
-        {% if prediccion == 2 %}
+    {% endif %}
 
-        <div class="resultado positivo">
+</div>
 
-            <h2>🟢 IMPACTO POSITIVO</h2>
+<script>
 
-            <p>
-                El uso de redes sociales muestra un efecto positivo
-                según el modelo KNN entrenado.
-            </p>
+document.querySelectorAll('input[type="number"]').forEach(input => {
 
-        </div>
+    input.addEventListener('input', function() {
 
-        {% endif %}
+        this.value = this.value.replace('-', '');
 
-    </div>
+        if(this.name === 'Mental_Health_Score'){
+
+            let valor = this.value;
+
+            valor = valor.replace(/[^0-9.]/g,'');
+
+            let partes = valor.split('.');
+
+            if(partes.length > 2){
+
+                valor = partes[0] + '.' + partes[1];
+            }
+
+            if(partes[1]){
+
+                valor = partes[0] + '.' + partes[1].substring(0,1);
+            }
+
+            this.value = valor;
+        }
+    });
+});
+
+</script>
 
 </body>
-
 </html>
