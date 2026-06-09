@@ -1,0 +1,233 @@
+/* =========================
+   FONDO GENERAL
+========================= */
+
+body{
+    margin:0;
+    padding:0;
+    min-height:100vh;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    font-family:'Segoe UI',sans-serif;
+
+    background:
+    linear-gradient(135deg,#0f172a,#111827,#1e293b);
+
+    color:white;
+}
+
+/* =========================
+   CONTENEDOR
+========================= */
+
+.container{
+
+    width:90%;
+    max-width:700px;
+
+    background:rgba(255,255,255,0.05);
+
+    backdrop-filter:blur(15px);
+
+    border:1px solid rgba(255,255,255,0.15);
+
+    border-radius:20px;
+
+    padding:40px;
+
+    box-shadow:
+    0 0 25px rgba(0,255,255,.2);
+}
+
+/* =========================
+   TITULO
+========================= */
+
+h1{
+
+    text-align:center;
+
+    color:#00ffff;
+
+    margin-bottom:30px;
+
+    text-shadow:0 0 10px cyan;
+}
+
+/* =========================
+   GRUPOS
+========================= */
+
+.grupo{
+
+    margin-bottom:20px;
+}
+
+/* =========================
+   LABELS
+========================= */
+
+label{
+
+    display:block;
+
+    margin-bottom:8px;
+
+    font-weight:bold;
+}
+
+/* =========================
+   INPUTS
+========================= */
+
+input,
+select{
+
+    width:100%;
+
+    padding:12px;
+
+    border-radius:10px;
+
+    border:2px solid transparent;
+
+    background:#1e293b;
+
+    color:white;
+
+    font-size:16px;
+
+    transition:0.3s;
+}
+
+/* =========================
+   FOCUS
+========================= */
+
+input:focus,
+select:focus{
+
+    outline:none;
+
+    border-color:cyan;
+
+    box-shadow:0 0 15px cyan;
+}
+
+/* =========================
+   VALIDACION
+========================= */
+
+input:valid{
+
+    border-color:#00ff88;
+}
+
+input:invalid{
+
+    border-color:#ff4d4d;
+}
+
+/* =========================
+   MENSAJE ERROR
+========================= */
+
+.error{
+
+    color:#ff6b6b;
+
+    font-size:13px;
+
+    margin-top:5px;
+
+    display:none;
+}
+
+/* =========================
+   BOTON
+========================= */
+
+button{
+
+    width:100%;
+
+    padding:15px;
+
+    border:none;
+
+    border-radius:12px;
+
+    background:cyan;
+
+    color:black;
+
+    font-size:18px;
+
+    font-weight:bold;
+
+    cursor:pointer;
+
+    transition:0.3s;
+}
+
+button:hover{
+
+    transform:scale(1.03);
+
+    box-shadow:0 0 20px cyan;
+}
+
+/* =========================
+   RESULTADO
+========================= */
+
+.resultado{
+
+    margin-top:25px;
+
+    padding:20px;
+
+    border-radius:12px;
+
+    text-align:center;
+
+    font-weight:bold;
+
+    font-size:22px;
+}
+
+/* NEGATIVO */
+
+.negativo{
+
+    background:#3d1111;
+
+    border:1px solid red;
+
+    color:#ff4d4d;
+}
+
+/* NEUTRAL */
+
+.neutral{
+
+    background:#3d3200;
+
+    border:1px solid gold;
+
+    color:gold;
+}
+
+/* POSITIVO */
+
+.positivo{
+
+    background:#113d1c;
+
+    border:1px solid #00ff88;
+
+    color:#00ff88;
+}

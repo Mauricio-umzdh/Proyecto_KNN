@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Predicción de Impacto en Redes Sociales</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+</head>
+
+<body>
+
+    <div class="container">
+
+        <h1>Predicción de Impacto en Redes Sociales</h1>
+
+        <form action="/predecir" method="POST">
+
+            <!-- EDAD -->
+            <div class="grupo">
+
+                <label>Edad</label>
+
+                <input
+                    type="number"
+                    name="Age"
+                    min="1"
+                    max="122"
+                    required>
+
+            </div>
+
+            <!-- GENERO -->
+            <div class="grupo">
+
+                <label>Género</label>
+
+                <select name="Gender" required>
+
+                    <option value="">Seleccione...</option>
+
+                    <option value="0">Femenino</option>
+                    <option value="1">Masculino</option>
+
+                </select>
+
+            </div>
+
+            <!-- NIVEL ACADEMICO -->
+            <div class="grupo">
+
+                <label>Nivel Académico</label>
+
+                <select name="Academic_Level" required>
+
+                    <option value="">Seleccione...</option>
+
+                    <option value="1">Secundario</option>
+                    <option value="2">Licenciatura</option>
+                    <option value="3">Graduado</option>
+
+                </select>
+
+            </div>
+
+            <!-- HORAS DE USO -->
+            <div class="grupo">
+
+                <label>Horas de Uso Diario</label>
+
+                <input
+                    type="number"
+                    name="Avg_Daily_Usage_Hours"
+                    min="1"
+                    max="24"
+                    required>
+
+            </div>
+
+            <!-- PLATAFORMA -->
+            <div class="grupo">
+
+                <label>Plataforma Más Usada</label>
+
+                <select name="Most_Used_Platform" required>
+
+                    <option value="">Seleccione...</option>
+
+                    <option value="1">Facebook</option>
+                    <option value="2">Instagram</option>
+                    <option value="3">LinkedIn</option>
+                    <option value="4">Snapchat</option>
+                    <option value="5">TikTok</option>
+                    <option value="6">Twitter / X</option>
+                    <option value="7">YouTube</option>
+                    <option value="8">WhatsApp</option>
+                    <option value="9">WeChat</option>
+                    <option value="10">KakaoTalk</option>
+                    <option value="11">LINE</option>
+                    <option value="12">VKontakte</option>
+                    <option value="13">Otros</option>
+
+                </select>
+
+            </div>
+
+            <!-- AFECTA RENDIMIENTO -->
+            <div class="grupo">
+
+                <label>¿Afecta el Rendimiento Académico?</label>
+
+                <select name="Affects_Academic_Performance" required>
+
+                    <option value="">Seleccione...</option>
+
+                    <option value="0">No</option>
+                    <option value="1">Sí</option>
+
+                </select>
+
+            </div>
+
+            <!-- HORAS DE SUEÑO -->
+            <div class="grupo">
+
+                <label>Horas de Sueño por Noche</label>
+
+                <input
+                    type="number"
+                    name="Sleep_Hours_Per_Night"
+                    min="1"
+                    max="24"
+                    required>
+
+            </div>
+
+            <!-- SALUD MENTAL -->
+            <div class="grupo">
+
+                <label>Puntaje de Salud Mental (1 - 10)</label>
+
+                <input
+                    type="number"
+                    name="Mental_Health_Score"
+                    min="1"
+                    max="10"
+                    required>
+
+            </div>
+
+            <button type="submit">
+
+                PREDECIR IMPACTO
+
+            </button>
+
+        </form>
+
+        <!-- RESULTADOS -->
+
+        {% if prediccion == 0 %}
+
+        <div class="resultado negativo">
+
+            <h2>🔴 IMPACTO NEGATIVO</h2>
+
+            <p>
+                Las redes sociales presentan un efecto
+                predominantemente negativo sobre el usuario.
+            </p>
+
+        </div>
+
+        {% endif %}
+
+        {% if prediccion == 1 %}
+
+        <div class="resultado neutral">
+
+            <h2>🟡 IMPACTO NEUTRAL</h2>
+
+            <p>
+                El impacto observado es moderado y equilibrado.
+            </p>
+
+        </div>
+
+        {% endif %}
+
+        {% if prediccion == 2 %}
+
+        <div class="resultado positivo">
+
+            <h2>🟢 IMPACTO POSITIVO</h2>
+
+            <p>
+                El uso de redes sociales muestra un efecto positivo
+                según el modelo KNN entrenado.
+            </p>
+
+        </div>
+
+        {% endif %}
+
+    </div>
+
+</body>
+
+</html>
