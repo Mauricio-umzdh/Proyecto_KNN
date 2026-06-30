@@ -175,9 +175,9 @@ def predecir():
         'Age': int(request.form['Age']),
         'Gender': int(request.form['Gender']),
         'Academic_Level': int(request.form['Academic_Level']),
-        'Avg_Daily_Usage_Hours': float(request.form['Avg_Daily_Usage_Hours']),
+        'Avg_Daily_Usage_Hours': int(request.form['Avg_Daily_Usage_Hours']),
         'Most_Used_Platform': int(request.form['Most_Used_Platform']),
-        'Sleep_Hours_Per_Night': float(request.form['Sleep_Hours_Per_Night']),
+        'Sleep_Hours_Per_Night': int(request.form['Sleep_Hours_Per_Night']),
         'Mental_Health_Score': float(request.form['Mental_Health_Score']),
         'Affects_Academic_Performance': int(request.form['Affects_Academic_Performance'])
 
