@@ -246,33 +246,33 @@ select:focus {
     line-height: 1;
 }
 
-.result-negativo {
+.result-alto {
     border-color: rgba(228, 108, 79, 0.35);
     background: #fff4f0;
 }
 
-.result-negativo strong,
-.result-negativo span {
+.result-alto strong,
+.result-alto span {
     color: #b6402b;
 }
 
-.result-neutral {
+.result-medio {
     border-color: rgba(183, 121, 31, 0.35);
     background: #fff9eb;
 }
 
-.result-neutral strong,
-.result-neutral span {
+.result-medio strong,
+.result-medio span {
     color: var(--warning);
 }
 
-.result-positivo {
+.result-bajo {
     border-color: rgba(47, 133, 90, 0.35);
     background: #effaf4;
 }
 
-.result-positivo strong,
-.result-positivo span {
+.result-bajo strong,
+.result-bajo span {
     color: var(--success);
 }
 

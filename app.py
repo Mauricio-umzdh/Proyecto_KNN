@@ -25,15 +25,15 @@ numeric_cols = [
 ]
 
 resultado_estados = {
-    0: 'negativo',
-    1: 'neutral',
-    2: 'positivo'
+    0: 'alto',
+    1: 'medio',
+    2: 'bajo'
 }
 
 resultado_titulos = {
-    0: 'Negativo',
-    1: 'Neutral',
-    2: 'Positivo'
+    0: 'Alto',
+    1: 'Medio',
+    2: 'Bajo'
 }
 
 
@@ -202,7 +202,7 @@ def predecir():
 
     # Texto resultado
     prediccion_texto = resultado_titulos.get(prediccion_num, 'No definido')
-    estado_resultado = resultado_estados.get(prediccion_num, 'neutral')
+    estado_resultado = resultado_estados.get(prediccion_num, 'medio')
     recomendaciones = crear_recomendaciones(datos, prediccion_num)
 
     # =========================

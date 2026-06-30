@@ -114,12 +114,12 @@
                     <div class="result-card result-{{ estado_resultado }}">
                         <p>Impacto estimado</p>
                         <strong>{{ prediccion }}</strong>
-                        {% if prediccion_num == 0 %}
-                            <span>Prioridad alta de mejora</span>
-                        {% elif prediccion_num == 1 %}
-                            <span>Seguimiento preventivo</span>
+                        {% if estado_resultado == 'alto' %}
+                            <span>Nivel alto de atención</span>
+                        {% elif estado_resultado == 'medio' %}
+                            <span>Nivel medio de seguimiento</span>
                         {% else %}
-                            <span>Hábitos favorables</span>
+                            <span>Nivel bajo de impacto</span>
                         {% endif %}
                     </div>
                 {% else %}
@@ -131,16 +131,16 @@
                 {% endif %}
             </section>
 
-            <section class="panel recommendation-panel">
-                <div class="panel-heading compact">
-                    <div>
-                        <span class="section-kicker">Orientación</span>
-                        <h2>Recomendaciones personalizadas</h2>
+            {% if recomendaciones %}
+                <section class="panel recommendation-panel">
+                    <div class="panel-heading compact">
+                        <div>
+                            <span class="section-kicker">Orientación</span>
+                            <h2>Recomendaciones personalizadas</h2>
+                        </div>
                     </div>
-                </div>
 
-                <div id="recommendationList" class="recommendation-list" data-has-server="{{ 'true' if recomendaciones else 'false' }}" aria-live="polite">
-                    {% if recomendaciones %}
+                    <div class="recommendation-list" aria-live="polite">
                         {% for recomendacion in recomendaciones %}
                             <article class="recommendation-item {{ recomendacion.nivel }}">
                                 <span class="recommendation-marker" aria-hidden="true"></span>
@@ -150,26 +150,16 @@
                                 </div>
                             </article>
                         {% endfor %}
-                    {% else %}
-                        <article class="recommendation-item baja">
-                            <span class="recommendation-marker" aria-hidden="true"></span>
-                            <div>
-                                <h3>A la espera de datos</h3>
-                                <p>Todavía no hay señales para analizar.</p>
-                            </div>
-                        </article>
-                    {% endif %}
-                </div>
+                    </div>
 
-                <p class="support-note">Esta orientación no reemplaza el apoyo de un tutor, consejero o profesional de salud mental.</p>
-            </section>
+                    <p class="support-note">Esta orientación no reemplaza el apoyo de un tutor, consejero o profesional de salud mental.</p>
+                </section>
+            {% endif %}
         </aside>
     </main>
 </div>
 
 <script>
-const form = document.getElementById('predictionForm');
-const recommendationList = document.getElementById('recommendationList');
 const decimalFields = new Set(['Avg_Daily_Usage_Hours', 'Sleep_Hours_Per_Night', 'Mental_Health_Score']);
 
 function cleanNumberInput(input) {
@@ -193,75 +183,11 @@ function cleanNumberInput(input) {
     input.value = value;
 }
 
-function valueOf(name) {
-    const field = form.elements[name];
-    if (!field || field.value === '') {
-        return Number.NaN;
-    }
-    return Number(field.value);
-}
-
-function recommendationMarkup(level, title, text) {
-    return '<article class="recommendation-item ' + level + '">' +
-        '<span class="recommendation-marker" aria-hidden="true"></span>' +
-        '<div><h3>' + title + '</h3><p>' + text + '</p></div>' +
-        '</article>';
-}
-
-function refreshRecommendations() {
-    const usage = valueOf('Avg_Daily_Usage_Hours');
-    const sleep = valueOf('Sleep_Hours_Per_Night');
-    const mental = valueOf('Mental_Health_Score');
-    const affectsPerformance = form.elements.Affects_Academic_Performance.value === '1';
-    const hasMetrics = [usage, sleep, mental].some(Number.isFinite);
-    const tips = [];
-
-    if (Number.isFinite(usage) && usage >= 8) {
-        tips.push(recommendationMarkup('alta', 'Uso digital muy alto', 'Define bloques sin redes durante el estudio y deja las notificaciones apagadas en horarios académicos.'));
-    } else if (Number.isFinite(usage) && usage >= 6) {
-        tips.push(recommendationMarkup('media', 'Uso digital elevado', 'Reduce gradualmente el tiempo de pantalla y reemplaza una franja de redes por descanso activo o repaso breve.'));
-    }
-
-    if (Number.isFinite(sleep) && sleep < 6) {
-        tips.push(recommendationMarkup('alta', 'Sueño insuficiente', 'Prioriza una rutina de cierre antes de dormir y evita revisar redes justo antes de acostarte.'));
-    } else if (Number.isFinite(sleep) && sleep < 7) {
-        tips.push(recommendationMarkup('media', 'Descanso mejorable', 'Suma pequeños ajustes de horario para acercarte a una noche más reparadora.'));
-    }
-
-    if (Number.isFinite(mental) && mental <= 4.5) {
-        tips.push(recommendationMarkup('alta', 'Bienestar emocional bajo', 'Busca apoyo de una persona de confianza o del servicio de bienestar estudiantil si el malestar persiste.'));
-    } else if (Number.isFinite(mental) && mental <= 6) {
-        tips.push(recommendationMarkup('media', 'Señales de desgaste', 'Agrega pausas breves, movimiento ligero y espacios sin multitarea para aliviar carga mental.'));
-    }
-
-    if (affectsPerformance) {
-        tips.push(recommendationMarkup('alta', 'Rendimiento afectado', 'Divide tus tareas en sesiones cortas y mantén el celular lejos del escritorio mientras estudias.'));
-    }
-
-    if (!tips.length && hasMetrics) {
-        tips.push(recommendationMarkup('baja', 'Hábitos equilibrados', 'Mantén tus rutinas y vuelve a revisar tus datos cuando aumente la carga académica.'));
-    }
-
-    if (!tips.length) {
-        tips.push(recommendationMarkup('baja', 'A la espera de datos', 'Todavía no hay señales para analizar.'));
-    }
-
-    recommendationList.dataset.hasServer = 'false';
-    recommendationList.innerHTML = tips.join('');
-}
-
 document.querySelectorAll('input[type="number"]').forEach(input => {
     input.addEventListener('input', function() {
         cleanNumberInput(this);
-        refreshRecommendations();
     });
 });
-
-form.addEventListener('change', refreshRecommendations);
-
-if (recommendationList.dataset.hasServer !== 'true') {
-    refreshRecommendations();
-}
 </script>
 </body>
 </html>
