@@ -1,375 +1,267 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
-
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>Predicción de Impacto en Redes Sociales</title>
-
-    <style>
-
-        *{
-            margin:0;
-            padding:0;
-            box-sizing:border-box;
-            font-family:'Segoe UI',sans-serif;
-        }
-
-        body{
-
-            min-height:100vh;
-
-            display:flex;
-            justify-content:center;
-            align-items:center;
-
-            background:linear-gradient(
-                135deg,
-                #0f172a,
-                #111827,
-                #1e293b
-            );
-
-            color:white;
-
-            padding:20px;
-        }
-
-        .container{
-
-            width:100%;
-            max-width:750px;
-
-            background:rgba(255,255,255,0.05);
-
-            backdrop-filter:blur(15px);
-
-            border:1px solid rgba(255,255,255,0.1);
-
-            border-radius:25px;
-
-            padding:40px;
-
-            box-shadow:
-                0 0 30px rgba(0,255,255,0.2);
-
-        }
-
-        h1{
-
-            text-align:center;
-
-            margin-bottom:30px;
-
-            color:#00ffff;
-        }
-
-        .grupo{
-
-            margin-bottom:18px;
-        }
-
-        label{
-
-            display:block;
-
-            margin-bottom:8px;
-
-            font-weight:bold;
-        }
-
-        input,
-        select{
-
-            width:100%;
-
-            padding:12px;
-
-            border-radius:12px;
-
-            border:1px solid rgba(255,255,255,0.15);
-
-            background:#1e293b;
-
-            color:white;
-
-            font-size:15px;
-        }
-
-        input:focus,
-        select:focus{
-
-            outline:none;
-
-            box-shadow:0 0 12px cyan;
-        }
-
-        button{
-
-            width:100%;
-
-            padding:15px;
-
-            border:none;
-
-            border-radius:15px;
-
-            background:cyan;
-
-            color:black;
-
-            font-size:18px;
-
-            font-weight:bold;
-
-            cursor:pointer;
-
-            transition:0.3s;
-        }
-
-        button:hover{
-
-            transform:scale(1.02);
-
-            box-shadow:0 0 20px cyan;
-        }
-
-        .resultado{
-
-            margin-top:25px;
-
-            text-align:center;
-
-            padding:20px;
-
-            border-radius:15px;
-
-            font-size:20px;
-
-            font-weight:bold;
-        }
-
-        .negativo{
-
-            background:#3b0d0d;
-            border:2px solid red;
-            color:#ff7a7a;
-        }
-
-        .neutral{
-
-            background:#3d3608;
-            border:2px solid gold;
-            color:#ffe066;
-        }
-
-        .positivo{
-
-            background:#083d1c;
-            border:2px solid lime;
-            color:#8cff8c;
-        }
-
-    </style>
-
+    <title>Bienestar estudiantil</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
-
 <body>
-
-<div class="container">
-
-    <h1>Predicción de Impacto en Redes Sociales</h1>
-
-    <form action="/predecir" method="POST">
-
-        <div class="grupo">
-            <label>Edad</label>
-            <input
-                type="number"
-                name="Age"
-                min="1"
-                max="122"
-                step="1"
-                required
-            >
+{% set valores = valores|default({}) %}
+<div class="page-shell">
+    <header class="app-header">
+        <div>
+            <p class="eyebrow">Evaluación de bienestar estudiantil</p>
+            <h1>Predicción de agotamiento por hábitos digitales</h1>
+            <p class="lead">Analiza cómo el uso de redes, el descanso y el estado emocional pueden influir en el rendimiento académico.</p>
         </div>
-
-        <div class="grupo">
-            <label>Género</label>
-
-            <select name="Gender" required>
-
-                <option value="0">Femenino</option>
-                <option value="1">Masculino</option>
-
-            </select>
-
+        <div class="model-badge">
+            <span>Modelo</span>
+            <strong>KNN</strong>
         </div>
+    </header>
 
-        <div class="grupo">
-            <label>Nivel Académico</label>
-
-            <select name="Academic_Level" required>
-
-                <option value="1">Secundario</option>
-                <option value="2">Licenciatura</option>
-                <option value="3">Graduado</option>
-
-            </select>
-
-        </div>
-
-        <div class="grupo">
-            <label>Plataforma Más Utilizada</label>
-
-            <select name="Most_Used_Platform" required>
-
-                <option value="1">Facebook</option>
-                <option value="2">Instagram</option>
-                <option value="3">LinkedIn</option>
-                <option value="4">Snapchat</option>
-                <option value="5">TikTok</option>
-                <option value="6">Twitter/X</option>
-                <option value="7">YouTube</option>
-                <option value="8">WhatsApp</option>
-                <option value="9">WeChat</option>
-                <option value="10">KakaoTalk</option>
-                <option value="11">LINE</option>
-                <option value="12">VKontakte</option>
-                <option value="13">Otros</option>
-
-            </select>
-
-        </div>
-
-        <div class="grupo">
-            <label>Horas de Uso Diario</label>
-
-            <input
-                type="number"
-                name="Avg_Daily_Usage_Hours"
-                min="1"
-                max="24"
-                step="1"
-                required
-            >
-        </div>
-
-        <div class="grupo">
-            <label>¿Afecta el Rendimiento Académico?</label>
-
-            <select
-                name="Affects_Academic_Performance"
-                required
-            >
-
-                <option value="0">No</option>
-                <option value="1">Sí</option>
-
-            </select>
-
-        </div>
-
-        <div class="grupo">
-            <label>Horas de Sueño por Noche</label>
-
-            <input
-                type="number"
-                name="Sleep_Hours_Per_Night"
-                min="1"
-                max="24"
-                step="1"
-                required
-            >
-        </div>
-
-        <div class="grupo">
-            <label>Puntaje de Salud Mental (1.0 - 10.0)</label>
-
-            <input
-                type="number"
-                name="Mental_Health_Score"
-                min="1"
-                max="10"
-                step="0.1"
-                required
-            >
-        </div>
-
-        <button type="submit">
-
-            PREDECIR IMPACTO
-
-        </button>
-
-    </form>
-
-    {% if prediccion is not none %}
-
-        {% if prediccion == 0 %}
-
-            <div class="resultado negativo">
-
-                Resultado: NEGATIVO
-
+    <main class="workspace">
+        <section class="panel form-panel" aria-labelledby="form-title">
+            <div class="panel-heading">
+                <div>
+                    <span class="section-kicker">Datos del estudiante</span>
+                    <h2 id="form-title">Parámetros de evaluación</h2>
+                </div>
             </div>
 
-        {% elif prediccion == 1 %}
+            <form id="predictionForm" action="/predecir" method="POST">
+                <div class="form-grid">
+                    <div class="field full-mobile">
+                        <label for="Age">Edad</label>
+                        <input id="Age" type="number" name="Age" min="1" max="122" step="1" value="{{ valores.get('Age', '') }}" required>
+                    </div>
 
-            <div class="resultado neutral">
+                    <div class="field full-mobile">
+                        <label for="Gender">Género</label>
+                        <select id="Gender" name="Gender" required>
+                            <option value="0" {% if valores.get('Gender') == 0 %}selected{% endif %}>Femenino</option>
+                            <option value="1" {% if valores.get('Gender') == 1 %}selected{% endif %}>Masculino</option>
+                        </select>
+                    </div>
 
-                Resultado: NEUTRAL
+                    <div class="field full-mobile">
+                        <label for="Academic_Level">Nivel académico</label>
+                        <select id="Academic_Level" name="Academic_Level" required>
+                            <option value="1" {% if valores.get('Academic_Level') == 1 %}selected{% endif %}>Secundario</option>
+                            <option value="2" {% if valores.get('Academic_Level') == 2 %}selected{% endif %}>Licenciatura</option>
+                            <option value="3" {% if valores.get('Academic_Level') == 3 %}selected{% endif %}>Graduado</option>
+                        </select>
+                    </div>
 
-            </div>
+                    <div class="field full-mobile">
+                        <label for="Most_Used_Platform">Plataforma más utilizada</label>
+                        <select id="Most_Used_Platform" name="Most_Used_Platform" required>
+                            <option value="1" {% if valores.get('Most_Used_Platform') == 1 %}selected{% endif %}>Facebook</option>
+                            <option value="2" {% if valores.get('Most_Used_Platform') == 2 %}selected{% endif %}>Instagram</option>
+                            <option value="3" {% if valores.get('Most_Used_Platform') == 3 %}selected{% endif %}>LinkedIn</option>
+                            <option value="4" {% if valores.get('Most_Used_Platform') == 4 %}selected{% endif %}>Snapchat</option>
+                            <option value="5" {% if valores.get('Most_Used_Platform') == 5 %}selected{% endif %}>TikTok</option>
+                            <option value="6" {% if valores.get('Most_Used_Platform') == 6 %}selected{% endif %}>Twitter/X</option>
+                            <option value="7" {% if valores.get('Most_Used_Platform') == 7 %}selected{% endif %}>YouTube</option>
+                            <option value="8" {% if valores.get('Most_Used_Platform') == 8 %}selected{% endif %}>WhatsApp</option>
+                            <option value="9" {% if valores.get('Most_Used_Platform') == 9 %}selected{% endif %}>WeChat</option>
+                            <option value="10" {% if valores.get('Most_Used_Platform') == 10 %}selected{% endif %}>KakaoTalk</option>
+                            <option value="11" {% if valores.get('Most_Used_Platform') == 11 %}selected{% endif %}>LINE</option>
+                            <option value="12" {% if valores.get('Most_Used_Platform') == 12 %}selected{% endif %}>VKontakte</option>
+                            <option value="13" {% if valores.get('Most_Used_Platform') == 13 %}selected{% endif %}>Otros</option>
+                        </select>
+                    </div>
 
-        {% elif prediccion == 2 %}
+                    <div class="field metric-field">
+                        <label for="Avg_Daily_Usage_Hours">Horas de uso diario</label>
+                        <input id="Avg_Daily_Usage_Hours" type="number" name="Avg_Daily_Usage_Hours" min="1" max="24" step="0.1" value="{{ valores.get('Avg_Daily_Usage_Hours', '') }}" required>
+                        <span class="field-note">Rango: 1 a 24 horas</span>
+                    </div>
 
-            <div class="resultado positivo">
+                    <div class="field metric-field">
+                        <label for="Sleep_Hours_Per_Night">Horas de sueño por noche</label>
+                        <input id="Sleep_Hours_Per_Night" type="number" name="Sleep_Hours_Per_Night" min="1" max="24" step="0.1" value="{{ valores.get('Sleep_Hours_Per_Night', '') }}" required>
+                        <span class="field-note">Rango: 1 a 24 horas</span>
+                    </div>
 
-                Resultado: POSITIVO
+                    <div class="field metric-field">
+                        <label for="Mental_Health_Score">Puntaje de salud mental</label>
+                        <input id="Mental_Health_Score" type="number" name="Mental_Health_Score" min="1" max="10" step="0.1" value="{{ valores.get('Mental_Health_Score', '') }}" required>
+                        <span class="field-note">Escala: 1.0 a 10.0</span>
+                    </div>
 
-            </div>
+                    <div class="field metric-field">
+                        <label for="Affects_Academic_Performance">¿Afecta el rendimiento académico?</label>
+                        <select id="Affects_Academic_Performance" name="Affects_Academic_Performance" required>
+                            <option value="0" {% if valores.get('Affects_Academic_Performance') == 0 %}selected{% endif %}>No</option>
+                            <option value="1" {% if valores.get('Affects_Academic_Performance') == 1 %}selected{% endif %}>Sí</option>
+                        </select>
+                    </div>
+                </div>
 
-        {% endif %}
+                <button class="primary-button" type="submit">
+                    <span aria-hidden="true">↗</span>
+                    Evaluar impacto
+                </button>
+            </form>
+        </section>
 
-    {% endif %}
+        <aside class="insight-column" aria-label="Resultado y recomendaciones">
+            <section class="panel result-panel">
+                <span class="section-kicker">Resultado</span>
+                {% if prediccion %}
+                    <div class="result-card result-{{ estado_resultado }}">
+                        <p>Impacto estimado</p>
+                        <strong>{{ prediccion }}</strong>
+                        {% if prediccion_num == 0 %}
+                            <span>Prioridad alta de mejora</span>
+                        {% elif prediccion_num == 1 %}
+                            <span>Seguimiento preventivo</span>
+                        {% else %}
+                            <span>Hábitos favorables</span>
+                        {% endif %}
+                    </div>
+                {% else %}
+                    <div class="result-card empty-result">
+                        <p>Impacto estimado</p>
+                        <strong>Sin evaluar</strong>
+                        <span>A la espera de parámetros académicos y de bienestar.</span>
+                    </div>
+                {% endif %}
+            </section>
 
+            <section class="panel recommendation-panel">
+                <div class="panel-heading compact">
+                    <div>
+                        <span class="section-kicker">Orientación</span>
+                        <h2>Recomendaciones personalizadas</h2>
+                    </div>
+                </div>
+
+                <div id="recommendationList" class="recommendation-list" data-has-server="{{ 'true' if recomendaciones else 'false' }}" aria-live="polite">
+                    {% if recomendaciones %}
+                        {% for recomendacion in recomendaciones %}
+                            <article class="recommendation-item {{ recomendacion.nivel }}">
+                                <span class="recommendation-marker" aria-hidden="true"></span>
+                                <div>
+                                    <h3>{{ recomendacion.titulo }}</h3>
+                                    <p>{{ recomendacion.detalle }}</p>
+                                </div>
+                            </article>
+                        {% endfor %}
+                    {% else %}
+                        <article class="recommendation-item baja">
+                            <span class="recommendation-marker" aria-hidden="true"></span>
+                            <div>
+                                <h3>A la espera de datos</h3>
+                                <p>Todavía no hay señales para analizar.</p>
+                            </div>
+                        </article>
+                    {% endif %}
+                </div>
+
+                <p class="support-note">Esta orientación no reemplaza el apoyo de un tutor, consejero o profesional de salud mental.</p>
+            </section>
+        </aside>
+    </main>
 </div>
 
 <script>
+const form = document.getElementById('predictionForm');
+const recommendationList = document.getElementById('recommendationList');
+const decimalFields = new Set(['Avg_Daily_Usage_Hours', 'Sleep_Hours_Per_Night', 'Mental_Health_Score']);
+
+function cleanNumberInput(input) {
+    if (!decimalFields.has(input.name)) {
+        input.value = input.value.replace(/[^0-9]/g, '');
+        return;
+    }
+
+    let value = input.value.replace(/[^0-9.]/g, '');
+    const parts = value.split('.');
+
+    if (parts.length > 2) {
+        value = parts[0] + '.' + parts.slice(1).join('');
+    }
+
+    const decimalParts = value.split('.');
+    if (decimalParts[1]) {
+        value = decimalParts[0] + '.' + decimalParts[1].substring(0, 1);
+    }
+
+    input.value = value;
+}
+
+function valueOf(name) {
+    const field = form.elements[name];
+    if (!field || field.value === '') {
+        return Number.NaN;
+    }
+    return Number(field.value);
+}
+
+function recommendationMarkup(level, title, text) {
+    return '<article class="recommendation-item ' + level + '">' +
+        '<span class="recommendation-marker" aria-hidden="true"></span>' +
+        '<div><h3>' + title + '</h3><p>' + text + '</p></div>' +
+        '</article>';
+}
+
+function refreshRecommendations() {
+    const usage = valueOf('Avg_Daily_Usage_Hours');
+    const sleep = valueOf('Sleep_Hours_Per_Night');
+    const mental = valueOf('Mental_Health_Score');
+    const affectsPerformance = form.elements.Affects_Academic_Performance.value === '1';
+    const hasMetrics = [usage, sleep, mental].some(Number.isFinite);
+    const tips = [];
+
+    if (Number.isFinite(usage) && usage >= 8) {
+        tips.push(recommendationMarkup('alta', 'Uso digital muy alto', 'Define bloques sin redes durante el estudio y deja las notificaciones apagadas en horarios académicos.'));
+    } else if (Number.isFinite(usage) && usage >= 6) {
+        tips.push(recommendationMarkup('media', 'Uso digital elevado', 'Reduce gradualmente el tiempo de pantalla y reemplaza una franja de redes por descanso activo o repaso breve.'));
+    }
+
+    if (Number.isFinite(sleep) && sleep < 6) {
+        tips.push(recommendationMarkup('alta', 'Sueño insuficiente', 'Prioriza una rutina de cierre antes de dormir y evita revisar redes justo antes de acostarte.'));
+    } else if (Number.isFinite(sleep) && sleep < 7) {
+        tips.push(recommendationMarkup('media', 'Descanso mejorable', 'Suma pequeños ajustes de horario para acercarte a una noche más reparadora.'));
+    }
+
+    if (Number.isFinite(mental) && mental <= 4.5) {
+        tips.push(recommendationMarkup('alta', 'Bienestar emocional bajo', 'Busca apoyo de una persona de confianza o del servicio de bienestar estudiantil si el malestar persiste.'));
+    } else if (Number.isFinite(mental) && mental <= 6) {
+        tips.push(recommendationMarkup('media', 'Señales de desgaste', 'Agrega pausas breves, movimiento ligero y espacios sin multitarea para aliviar carga mental.'));
+    }
+
+    if (affectsPerformance) {
+        tips.push(recommendationMarkup('alta', 'Rendimiento afectado', 'Divide tus tareas en sesiones cortas y mantén el celular lejos del escritorio mientras estudias.'));
+    }
+
+    if (!tips.length && hasMetrics) {
+        tips.push(recommendationMarkup('baja', 'Hábitos equilibrados', 'Mantén tus rutinas y vuelve a revisar tus datos cuando aumente la carga académica.'));
+    }
+
+    if (!tips.length) {
+        tips.push(recommendationMarkup('baja', 'A la espera de datos', 'Todavía no hay señales para analizar.'));
+    }
+
+    recommendationList.dataset.hasServer = 'false';
+    recommendationList.innerHTML = tips.join('');
+}
 
 document.querySelectorAll('input[type="number"]').forEach(input => {
-
     input.addEventListener('input', function() {
-
-        this.value = this.value.replace('-', '');
-
-        if(this.name === 'Mental_Health_Score'){
-
-            let valor = this.value;
-
-            valor = valor.replace(/[^0-9.]/g,'');
-
-            let partes = valor.split('.');
-
-            if(partes.length > 2){
-
-                valor = partes[0] + '.' + partes[1];
-            }
-
-            if(partes[1]){
-
-                valor = partes[0] + '.' + partes[1].substring(0,1);
-            }
-
-            this.value = valor;
-        }
+        cleanNumberInput(this);
+        refreshRecommendations();
     });
 });
 
-</script>
+form.addEventListener('change', refreshRecommendations);
 
+if (recommendationList.dataset.hasServer !== 'true') {
+    refreshRecommendations();
+}
+</script>
 </body>
 </html>
